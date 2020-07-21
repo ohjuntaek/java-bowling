@@ -1,11 +1,13 @@
 package bowling.domain;
 
-import java.util.List;
-
 public class Gamer {
 
-    private String name;
+    private final String name;
     private Game playingGame;
+
+    public Gamer(String name) {
+        this.name = name;
+    }
 
     public void startGame() {
         playingGame = Game.gameStart();
@@ -16,9 +18,11 @@ public class Gamer {
         playingGame.record(point);
     }
 
+    public void printPoint(int round) {
+        playingGame.printPointOfFrame(round);
+    }
+
     private int swing() {
         return 5;
     }
-
-
 }

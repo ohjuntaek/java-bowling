@@ -5,17 +5,42 @@ import java.util.List;
 
 public class Game {
 
-    private final List<Point> points;
+    private final List<Frame> frames;
+    private int currentRound;
 
     public static Game gameStart() {
-        return new Game(new ArrayList<>());
+        ArrayList<Frame> frames = new ArrayList<>();
+        frames.add(Frame.startFrame());
+        return new Game(frames);
     }
 
-    private Game(List<Point> points) {
-        this.points = points;
+    public Game(List<Frame> frames) {
+        this.frames = frames;
     }
 
     public void record(int point) {
-        points.add(new Point(point));
+        Frame currentFrame = frames.get(currentRound);
+
+        currentFrame.record(point);
+        next();
+    }
+
+    public void next() {
+        Frame currentFrame = frames.get(currentRound);
+
+        if (currentFrame.getCurrentHalf() == HALF.SECOND_HALF) {
+            nextRound();
+            return;
+        }
+        currentFrame.nextHalf();
+    }
+
+    private void nextRound() {
+        currentRound++;
+        frames.add(Frame.startFrame());
+    }
+
+    public void printPointOfFrame(int round) {
+        System.out.println(frames.get(round - 1).getResult());
     }
 }
